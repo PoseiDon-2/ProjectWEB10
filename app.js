@@ -10,8 +10,7 @@ const PORT = 4000;
 
 //Database connection
 mongoose.connect('mongodb+srv://admin:adminWEB10@cluster0.3obax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+    useNewUrlParser: true
 }).then(() => {
     console.log('Connected to MongoDB');
 }).catch((err) => {
