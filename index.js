@@ -2,38 +2,33 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const ejs = require('ejs');
+const PORT = 4000;
 const mongoose = require('mongoose');
 const expressSession = require('express-session');
-const MongoStore = require('connect-mongo');
 const flash = require('connect-flash');
-const serverless = require('serverless-http');
 
 
-// Database connection
-mongoose.connect('mongodb+srv://admin:adminWEB10@cluster0.3obax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+
+//Connect to DB
+mongoose.connect('mongodb+srv://admin:adminWEB10@cluster0.3obax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Connected to MongoDB');
+}).catch((err) => {
+    console.error('Failed to connect to MongoDB', err);
+});
 
 
 global.loggedIn = null;
 
-// Middleware
+
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(expressSession({ secret: 'secret', resave: false, saveUninitialized: false }));
 app.use(flash());
-app.use(
-    expressSession({
-        secret: 'secret',
-        resave: false,
-        saveUninitialized: false,
-        store: MongoStore.create({
-            mongoUrl: 'mongodb+srv://admin:adminWEB10@cluster0.3obax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-        }),
-        cookie: {
-            maxAge: 24 * 60 * 60 * 1000 // 1 วัน (ในมิลลิวินาที)
-        }
-    })
-);
-app.use('*', (req, res, next) => {
+app.use("*", (req, res, next) => {
     loggedIn = req.session.userId;
     next();
 });
@@ -74,4 +69,13 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-module.exports = serverless(app);
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+// ส่งออกฟังก์ชันเพื่อให้ Vercel ใช้งาน
+module.exports = (req, res) => {
+    app(req, res);
+};
+
