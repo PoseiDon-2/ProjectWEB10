@@ -56,7 +56,7 @@ const authMiddleware = require('./middleware/authMiddleware');
 
 // Routes
 app.get('/', indexController);
-app.get('/login', redirectIfAuth, loginController);
+app.post('/login', redirectIfAuth, loginController);
 app.get('/register', redirectIfAuth, registerController);
 app.post('/user/register', redirectIfAuth, storeUserController);
 app.post('/user/login', redirectIfAuth, loginUserController);
