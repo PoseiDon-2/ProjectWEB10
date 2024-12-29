@@ -9,31 +9,39 @@ const PORT = 4000;
 
 
 //Database connection
-mongoose.connect('mongodb+srv://admin:adminWEB10@cluster0.3obax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',{
-    useNewUrlParser: true
-})
+mongoose.connect('mongodb+srv://admin:adminWEB10@cluster0.3obax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Connected to MongoDB');
+}).catch((err) => {
+    console.error('Failed to connect to MongoDB', err);
+});
 
 global.loggedIn = null;
 
 app.use(express.static('public'));
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use(flash());
-app.use(expressSession({
-    secret:"node secret"
+app.use(expressSession({ 
+    secret: 'secret', 
+    resave: false, 
+    saveUninitialized: false 
 }));
-
 app.use("*", (req, res, next) => {
     loggedIn = req.session.userId;
     next();
 });
+
+//Set views
 app.set('view engine', 'ejs');
-app.set('views',path.resolve(__dirname + '/views'));
-app.set('controllers', path.resolve(__dirname + '/controllers'));
-app.set('middleware', path.resolve(__dirname + '/middleware'));
-app.set('public', path.resolve(__dirname + '/public'));
-app.set('models', path.resolve(__dirname + '/models'));
-app.set('middleware', path.resolve(__dirname + '/middleware'));
+app.set('views',path.resolve(__dirname + 'views'));
+app.set('controllers', path.resolve(__dirname + 'controllers'));
+app.set('middleware', path.resolve(__dirname + 'middleware'));
+app.set('public', path.resolve(__dirname + 'public'));
+app.set('models', path.resolve(__dirname + 'models'));
+app.set('middleware', path.resolve(__dirname + 'middleware'));
 
 
 //Controllers
