@@ -61,7 +61,7 @@ app.get('/register', redirectIfAuth, registerController);
 app.post('/user/register', redirectIfAuth, storeUserController);
 app.post('/user/login', redirectIfAuth, loginUserController);
 app.get('/logout', logoutController);
-app.get('/home', authMiddleware, homeController);
+app.post('/home', authMiddleware, homeController);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
