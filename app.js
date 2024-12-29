@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const ejs = require('ejs');
 const mongoose = require('mongoose');
 const expressSession = require('express-session'); 
@@ -27,12 +28,12 @@ app.use("*", (req, res, next) => {
     next();
 });
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/views');
-app.set('controllers', __dirname + '/controllers');
-app.set('middleware', __dirname + '/middleware');
-app.set('public', __dirname + '/public');
-app.set('models', __dirname + '/models');
-app.set('middleware', __dirname + '/middleware');
+app.set('views',path.resolve(__dirname + '/views'));
+app.set('controllers', path.resolve(__dirname + '/controllers'));
+app.set('middleware', path.resolve(__dirname + '/middleware'));
+app.set('public', path.resolve(__dirname + '/public'));
+app.set('models', path.resolve(__dirname + '/models'));
+app.set('middleware', path.resolve(__dirname + '/middleware'));
 
 
 //Controllers
