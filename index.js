@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const expressSession = require('express-session'); 
 const flash = require('connect-flash');
 const PORT = 4000;
+const serverless = require('serverless-http');
 
 
 //Database connection
@@ -35,12 +36,13 @@ app.use("*", (req, res, next) => {
 
 //Set views
 app.set('view engine', 'ejs');
-app.set('views',path.resolve(__dirname + 'views'));
-app.set('controllers', path.resolve(__dirname + 'controllers'));
-app.set('middleware', path.resolve(__dirname + 'middleware'));
-app.set('public', path.resolve(__dirname + 'public'));
-app.set('models', path.resolve(__dirname + 'models'));
-app.set('middleware', path.resolve(__dirname + 'middleware'));
+app.set('views',path.resolve(__dirname, 'views'));
+app.set('controllers', path.resolve(__dirname, 'controllers'));
+app.set('middleware', path.resolve(__dirname, 'middleware'));
+app.set('public', path.resolve(__dirname, 'public'));
+app.set('models', path.resolve(__dirname, 'models'));
+
+
 
 
 //Controllers
@@ -66,9 +68,9 @@ app.get('/logout', logoutController);
 app.get('/home', authMiddleware, homeController);
 
 
-app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`App listening on port ${PORT}`);
+// });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -76,9 +78,9 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-module.exports = (req, res) => {
-    app(req, res);
-};
-module.exports = app;
+// module.exports = (req, res) => {
+//     app(req, res);
+// };
 
 
+module.exports = serverless(app);
