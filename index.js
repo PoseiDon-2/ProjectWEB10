@@ -11,7 +11,7 @@ const serverless = require('serverless-http');
 
 //Database connection
 mongoose.connect('mongodb+srv://admin:adminWEB10@cluster0.3obax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
-    useNewUrlParser: true
+    ttl: 24 * 60 * 60 // กำหนดเวลาหมดอายุของ session (1 วัน)
 }).then(() => {
     console.log('Connected to MongoDB');
 }).catch((err) => {
