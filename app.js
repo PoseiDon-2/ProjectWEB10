@@ -27,6 +27,13 @@ app.use("*", (req, res, next) => {
     next();
 });
 app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+app.set('controllers', __dirname + '/controllers');
+app.set('middleware', __dirname + '/middleware');
+app.set('public', __dirname + '/public');
+app.set('models', __dirname + '/models');
+app.set('middleware', __dirname + '/middleware');
+
 
 //Controllers
 const indexController = require('./controllers/indexController');
